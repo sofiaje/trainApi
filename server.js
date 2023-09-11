@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: true}))
 // enable cors for all routes
 app.use(cors({
     origin: [
-
+        'http://localhost:5173/'
     ],
     methods: ["POST", "PUT", "GET", "DELETE", "HEAD", "OPTIONS"],
     credentials: true
