@@ -11,7 +11,13 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 // enable cors for all routes
-app.use(cors());
+app.use(cors({
+    origin: [
+
+    ],
+    methods: ["POST", "PUT", "GET", "DELETE", "HEAD", "OPTIONS"],
+    credentials: true
+}));
 
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config()
@@ -34,7 +40,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/workouts", async (req, res) => {
     const result = await Workout.find()
-    res.send({ "workouts": result})
+    res.json(result)
 })
 
 const start = async () => {
