@@ -1,13 +1,17 @@
 // const { v4: uuidv4 } = require('uuid');
 const express = require('express')
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const Workout = require('./models/workout')
+const cors = require('cors');
 
 const app = express()
 mongoose.set('strictQuery', false);
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+// enable cors for all routes
+app.use(cors());
 
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config()
