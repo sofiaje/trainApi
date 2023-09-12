@@ -45,12 +45,18 @@ app.get("/api/workouts", async (req, res) => {
 app.post("/api/workouts", async (req, res) => {
     console.log(req.body)
     const workout = new Workout(req.body)
+
     try {
-        await workout.save()
-        res.status(201).json(workout)
+        await workout.save(workout)
+        res.status(200).json({
+            susses: true,
+            data: req.body
+        })
     } catch (e) {
-        res.status(400).json({error: err.message})
+        console.log(e.message)
     }
+    
+
 })
 
 // start listening when connected
