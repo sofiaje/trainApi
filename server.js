@@ -10,8 +10,9 @@ mongoose.set('strictQuery', false);
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-// enable cors for all routes
+// enable cors for all routes, change this
 app.use(cors());
+
 
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config()
@@ -23,8 +24,8 @@ const CONNECTION = process.env.CONNECTION
 app.use(express.static('public'))
 
 const workout = new Workout({
-    type: "running",
-    duration: 20
+    type: "walk",
+    duration: 60
 })
 
 
@@ -33,10 +34,26 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/workouts", async (req, res) => {
-    const result = await Workout.find()
-    res.json(result)
+    try {
+        const result = await Workout.find()
+        res.json(result)
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
 })
 
+app.post("/api/workouts", async (req, res) => {
+    console.log(req.body)
+    const workout = new Workout(req.body)
+    try {
+        await workout.save()
+        res.status(201).json(workout)
+    } catch (e) {
+        res.status(400).json({error: err.message})
+    }
+})
+
+// start listening when connected
 const start = async () => {
     try {
         await mongoose.connect(CONNECTION);
