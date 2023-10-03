@@ -16,7 +16,9 @@ app.use(
         origin: [
             "http://127.0.0.1:5173",
             "http://localhost:5173"
-        ]
+        ], 
+        methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "HEAD"],
+        credentials: true,
 }));
 
 if (process.env.NODE_ENV !== "production") {
