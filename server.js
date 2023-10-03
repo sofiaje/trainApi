@@ -8,7 +8,7 @@ const app = express()
 mongoose.set('strictQuery', false);
 
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 // enable cors for all routes, change this
 app.use(cors());
@@ -38,33 +38,36 @@ app.get("/api/workouts", async (req, res) => {
         const result = await Workout.find()
         res.json(result)
     } catch (err) {
-        res.status(500).json({error: err.message})
+        res.status(500).json({ error: err.message })
     }
 })
 
 app.post("/api/workouts", async (req, res) => {
-    console.log(req.body)
-    const workout = new Workout(req.body)
-
     try {
-        await workout.save(workout)
+        console.log(req.body)
+        const workout = new Workout(req.body)
+        await workout.save()
+        console.log("workout saved")
         res.status(200).json({
-            susses: true,
-            data: req.body
+            success: true,
+            data: workout
         })
-    } catch (e) {
-        console.log(e.message)
-    }
-    
 
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false, 
+            message: "an error occurred"
+        })
+    }
 })
 
 // start listening when connected
 const start = async () => {
     try {
         await mongoose.connect(CONNECTION);
-        app.listen(PORT, () => { `Listening on port ${PORT}` })
-    } catch(err) {
+        app.listen(PORT, () => { console.log(`Listening on port ${PORT}`) })
+    } catch (err) {
         console.log(err.message)
     }
 }
