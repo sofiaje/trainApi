@@ -13,7 +13,6 @@ app.use(express.urlencoded({ extended: true }))
 // enable cors for all routes, change this
 app.use(cors());
 
-
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config()
 }
@@ -23,16 +22,17 @@ const CONNECTION = process.env.CONNECTION
 
 app.use(express.static('public'))
 
-const workout = new Workout({
-    type: "walk",
-    duration: 60
-})
-
+// example workout
+// const workout = new Workout({
+//     type: "walk",
+//     duration: 60,
+//     likes: 0
+// })
 
 app.get("/", (req, res) => {
     res.send("hello world")
 })
-
+// get request
 app.get("/api/workouts", async (req, res) => {
     try {
         const result = await Workout.find()
@@ -41,11 +41,11 @@ app.get("/api/workouts", async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 })
-
+// post request
 app.post("/api/workouts", async (req, res) => {
     try {
         console.log(req.body)
-        const workout = new Workout(req.body)
+        const workout = new Workout({...req.body, likes: 0 })
         await workout.save()
         console.log("workout saved")
         res.status(200).json({
