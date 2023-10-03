@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const workoutSchema = new mongoose.Schema({
         type: String,
-        duration: String,
+        duration: Number,
         likes: Number
 })
 
